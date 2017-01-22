@@ -177,9 +177,11 @@ static OSStatus renderCallback (void *inRefCon, AudioUnitRenderActionFlags	*ioAc
     
     // Set the buffer size, this will affect the number of samples that get rendered every time the audio callback is fired
     // A small number will get you lower latency audio, but will make your processor work harder
-    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #if !TARGET_IPHONE_SIMULATOR
     Float32 preferredBufferSize = 0.0232;
+
     if (checkError(AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareIOBufferDuration,
                                             sizeof(preferredBufferSize),
                                             &preferredBufferSize),
@@ -187,9 +189,11 @@ static OSStatus renderCallback (void *inRefCon, AudioUnitRenderActionFlags	*ioAc
         
         // just warning
     }
+
 #endif
-        
+
     if (checkError(AudioSessionSetActive(YES),
+#pragma clang diagnostic pop
                    "Couldn't activate the audio session"))
         return NO;
     

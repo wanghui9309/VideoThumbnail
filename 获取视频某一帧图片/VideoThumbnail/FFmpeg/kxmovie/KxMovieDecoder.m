@@ -18,6 +18,8 @@
 #import "KxAudioManager.h"
 #import "KxLogger.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 ////////////////////////////////////////////////////////////////////////////////
 NSString * kxmovieErrorDomain = @"ru.kolyvan.kxmovie";
 static void FFLog(void* context, int level, const char* format, va_list args);
@@ -1648,3 +1650,4 @@ static void FFLog(void* context, int level, const char* format, va_list args) {
     }
 }
 
+#pragma clang diagnostic pop

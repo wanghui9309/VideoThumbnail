@@ -26,6 +26,7 @@ xxxx 表示项目里面到VideoThumbnail文件夹的路径
   1. `libz.tbd`
   2. `libbz2.tbd`
   3. `libiconv.tbd`
+  4. `VideoToolbox.framework`
 
 工程里面需要导入，`YYcache` 框架
   1. 做了本地`url`时间戳缓存，每个url对应一个时间戳！每次先读取本地`url`比对时间有没有超过五分钟，超过了重新下载图片

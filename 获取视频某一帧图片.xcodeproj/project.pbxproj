@@ -44,6 +44,7 @@
 		7B52CF491E10F62D00CAED9B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B52CF481E10F62D00CAED9B /* CoreFoundation.framework */; };
 		7B52CF4B1E10F63600CAED9B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B52CF4A1E10F63600CAED9B /* QuartzCore.framework */; };
 		7B52CF4D1E10F64D00CAED9B /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B52CF4C1E10F64D00CAED9B /* libsqlite3.0.tbd */; };
+		7BF2791D1E345E03002F708E /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BF2791C1E345E03002F708E /* VideoToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -197,6 +198,7 @@
 		7B52CF481E10F62D00CAED9B /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		7B52CF4A1E10F63600CAED9B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7B52CF4C1E10F64D00CAED9B /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		7BF2791C1E345E03002F708E /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +206,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BF2791D1E345E03002F708E /* VideoToolbox.framework in Frameworks */,
 				7B52CF4D1E10F64D00CAED9B /* libsqlite3.0.tbd in Frameworks */,
 				7B52CF4B1E10F63600CAED9B /* QuartzCore.framework in Frameworks */,
 				7B52CF491E10F62D00CAED9B /* CoreFoundation.framework in Frameworks */,
@@ -506,6 +509,7 @@
 		7B52CF321E10F4F600CAED9B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7BF2791C1E345E03002F708E /* VideoToolbox.framework */,
 				7B52CF4C1E10F64D00CAED9B /* libsqlite3.0.tbd */,
 				7B52CF4A1E10F63600CAED9B /* QuartzCore.framework */,
 				7B52CF481E10F62D00CAED9B /* CoreFoundation.framework */,
