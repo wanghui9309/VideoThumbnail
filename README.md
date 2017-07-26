@@ -1,5 +1,5 @@
 # VideoThumbnail
-获取视频某一帧图片
+获取视频指定时间第一帧图片
 
 内存缓存图片，五分钟后滑动cell会重新下载图片！
 
@@ -14,9 +14,9 @@
 ***
 使用注意: 需要在工程
 
-  `Build Settings` 的 `Header Search Paths`  加入 `$(inherited)`, `$(PROJECT_DIR)/xxxxx/VideoThumbnail/FFmpeg/FFmpeg-iOS/include`
+  `Build Settings` 的 `Header Search Paths`  加入 `$(inherited)`, `$(PROJECT_DIR)/xxxxx/VideoThumbnail/FFmpeg/include`
   
-  `Build Settings` 的 `Library Search Paths` 加入 `$(inherited)`, `$(PROJECT_DIR)/xxxxx/VideoThumbnail/FFmpeg/FFmpeg-iOS/lib` 
+  `Build Settings` 的 `Library Search Paths` 加入 `$(inherited)`, `$(PROJECT_DIR)/xxxxx/VideoThumbnail/FFmpeg/lib` 
   
 xxxx 表示项目里面到VideoThumbnail文件夹的路径
 
