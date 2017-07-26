@@ -8,7 +8,7 @@
 
 #import "WHThumbnailManager.h"
 
-#import "KxMovieDecoder.h"
+#import "WHMovieDecode.h"
 
 #import "WHNetworkActivityIndicator.h"
 
@@ -98,24 +98,8 @@
             [weakSelf.downloadInURLs addObject:url];
         }
         
-        KxMovieDecoder *decoder = [[KxMovieDecoder alloc] init];
-        NSError *error = nil;
-        [decoder openFile:url error:&error];
-        NSArray *ar =  [decoder decodeFrames:minDuration];
-        KxMovieFrame *frame;
-        
-        for (KxMovieFrame *frames in ar)
-        {
-            if (frames.type == KxMovieFrameTypeVideo)
-            {
-                frame =  ar.lastObject;
-                break;
-            }
-        }
-        
-        KxVideoFrameRGB *rgbFrame = (KxVideoFrameRGB *)frame;
-        UIImage *imageKX = [rgbFrame asImage];
-        [decoder closeFile];
+        // 获取指定时间第一帧图片
+        UIImage *imageFrame = [WHMovieDecode.new movieDecode:url withDuration:minDuration];
         
         @synchronized (weakSelf.downloadInURLs)
         {
@@ -123,7 +107,7 @@
             [[WHNetworkActivityIndicator sharedActivityIndicator] stopActivity];
         }
         
-        NSData *imageData = UIImageJPEGRepresentation(imageKX, 0.2f);
+        NSData *imageData = UIImageJPEGRepresentation(imageFrame, 0.2f);
         UIImage *image = [UIImage imageWithData:imageData];
         if (image && imageData)
         {
