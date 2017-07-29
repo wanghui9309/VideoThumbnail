@@ -87,18 +87,31 @@ int GetDurationFirstIFrameAndConvertToPic(const char *url, int64_t duration)
     // 流中关于编解码器的信息就是被我们叫做"codec context"（编解码器上下文）的东西。
     // 这里面包含了流中所使用的关于编解码器的所有信息，现在我们有了一个指向他的指针。
     // 但是我们必需要找到真正的编解码器并且打开它
-    AVCodecParameters *pCodecPar = pFormatCtx->streams[videoStream]->codecpar;
-    AVCodec *pCodec = avcodec_find_decoder(pCodecPar->codec_id);
-    if (pCodec == NULL)
+    // 创建编码器上下文
+    AVCodecContext *pCodecCtx = avcodec_alloc_context3(NULL);
+    if (pCodecCtx == NULL)
     {
-        NSLog(@"没找到解码器");
+        NSLog(@"创建编码器上下文失败");
         avformat_close_input(&pFormatCtx);
         return -1;
     }
     
-    // 创建编码器上下文
-    AVCodecContext *pCodecCtx = avcodec_alloc_context3(pCodec);
-    avcodec_parameters_to_context(pCodecCtx, pCodecPar);
+    if (avcodec_parameters_to_context(pCodecCtx, pFormatCtx->streams[videoStream]->codecpar) < 0)
+    {
+        NSLog(@"AVCodecContext 赋值失败");
+        avcodec_free_context(&pCodecCtx);
+        avformat_close_input(&pFormatCtx);
+        return -1;
+    }
+    
+    AVCodec *pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
+    if (pCodec == NULL)
+    {
+        NSLog(@"没找到解码器");
+        avcodec_free_context(&pCodecCtx);
+        avformat_close_input(&pFormatCtx);
+        return -1;
+    }
     
     // 打开avcodec
     if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0)
