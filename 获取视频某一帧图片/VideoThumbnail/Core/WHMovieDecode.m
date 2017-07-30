@@ -164,7 +164,7 @@ int GetDurationFirstIFrameAndConvertToPic(const char *url, int64_t duration)
             // Decode video frame
             avcodec_send_packet(pCodecCtx, &packet);
             // Did we get a video frame?
-            if (avcodec_receive_frame(pCodecCtx, pFrame) == 0)
+            while (avcodec_receive_frame(pCodecCtx, pFrame) == 0)
             {
                 // 将图像从原始格式转换为RGB
                 sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pFrameRGB->data, pFrameRGB->linesize);
@@ -177,6 +177,9 @@ int GetDurationFirstIFrameAndConvertToPic(const char *url, int64_t duration)
                 av_packet_unref(&packet);
                 break;
             }
+            
+            if (packet.data == NULL)
+                break;
         }
         av_packet_unref(&packet);
     }
