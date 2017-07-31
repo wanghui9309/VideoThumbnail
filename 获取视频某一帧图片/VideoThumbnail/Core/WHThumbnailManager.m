@@ -67,7 +67,7 @@
  */
 - (NSOperation *)downloadImageWithVideoURL:(NSString *)url atTime:(CGFloat)minDuration success:(void (^)(UIImage *image))success
 {
-    if (!url || url.length == 0 || ![url containsString:@"http"]) return nil;
+    if (!url || url.length == 0) return nil;
     
     //1.判断内存缓存有没有image，如果有直接返回
     if ([self queryImageFromMemoryCacheWithUrlkey:url success:success]) return nil;
