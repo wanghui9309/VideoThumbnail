@@ -49,12 +49,23 @@ int GetDurationFirstIFrameAndConvertToPic(const char *url, int64_t duration)
 {
     // 视频流的格式内容
     AVFormatContext *pFormatCtx = NULL;
+    
+    NSString *strUrl = [NSString stringWithUTF8String:url];
+    AVDictionary *options = NULL;
+    if ([strUrl hasPrefix:@"rtmp"] || [strUrl hasPrefix:@"rtsp"])
+        av_dict_set(&options, "timeout", NULL, 0);
+    
     // 读取文件的头部并且把信息保存到我们给的AVFormatContext结构
     if (avformat_open_input(&pFormatCtx, url, NULL, NULL) != 0)
     {
         NSLog(@"打开文件失败");
+        if (options)
+            av_dict_free(&options);
         return -1;
     }
+    
+    if (options)
+        av_dict_free(&options);
     
     // 检查在文件中的流的信息
     if (avformat_find_stream_info(pFormatCtx, NULL) < 0)
