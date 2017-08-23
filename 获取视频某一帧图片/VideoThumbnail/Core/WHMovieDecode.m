@@ -145,6 +145,8 @@ int GetDurationFirstIFrameAndConvertToPic(const char *url, int64_t duration)
     {
         // 播放指定duration的任意帧
         av_seek_frame(pFormatCtx, -1, duration * AV_TIME_BASE, AVSEEK_FLAG_ANY);
+        // 清空解码器的缓存
+        avcodec_flush_buffers(pCodecCtx);
     }
     
     // 视频像素上下文
@@ -162,20 +164,22 @@ int GetDurationFirstIFrameAndConvertToPic(const char *url, int64_t duration)
         if (packet.stream_index == videoStream)
         {
             // Decode video frame
-            avcodec_send_packet(pCodecCtx, &packet);
-            // Did we get a video frame?
-            while (avcodec_receive_frame(pCodecCtx, pFrame) == 0)
+            while (avcodec_send_packet(pCodecCtx, &packet) >= 0)
             {
-                // 将图像从原始格式转换为RGB
-                sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pFrameRGB->data, pFrameRGB->linesize);
-                
-                // 帧转成图片,保存在内存
-                image = frameConvertImage(pFrameRGB, pCodecCtx->width, pCodecCtx->height);
-                
-                // Save the frame to disk.
-//                SaveFrameToPPM(pFrameRGB, pCodecCtx->width, pCodecCtx->height);
-                av_packet_unref(&packet);
-                break;
+                // Did we get a video frame?
+                if (avcodec_receive_frame(pCodecCtx, pFrame) >= 0)
+                {
+                    // 将图像从原始格式转换为RGB
+                    sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pFrameRGB->data, pFrameRGB->linesize);
+                    
+                    // 帧转成图片,保存在内存
+                    image = frameConvertImage(pFrameRGB, pCodecCtx->width, pCodecCtx->height);
+                    
+                    // Save the frame to disk.
+//                    SaveFrameToPPM(pFrameRGB, pCodecCtx->width, pCodecCtx->height);
+                    av_packet_unref(&packet);
+                    break;
+                }
             }
             
             if (packet.data == NULL)
