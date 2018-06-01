@@ -25,8 +25,7 @@
 
 @implementation WHThumbnailManager
 
-#pragma mark -
-#pragma mark sharedManager & init
+#pragma mark - sharedManager & init
 + (instancetype)sharedManager
 {
     static id instance = nil;
@@ -55,8 +54,7 @@
     return self;
 }
 
-#pragma mark -
-#pragma mark downloadImage
+#pragma mark - downloadImage
 /**
  根据视频URL截图某一秒的图片
 
@@ -104,7 +102,9 @@
         @synchronized (weakSelf.downloadInURLs)
         {
             [weakSelf.downloadInURLs removeObject:url];
-            [[WHNetworkActivityIndicator sharedActivityIndicator] stopActivity];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[WHNetworkActivityIndicator sharedActivityIndicator] stopActivity];
+            });
         }
         
         NSData *imageData = UIImageJPEGRepresentation(imageFrame, 0.2f);
@@ -113,7 +113,9 @@
         {
             [weakSelf.imageCache cacheImage:image forKey:url];
             
-            if (success) success(image);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (success) success(image);
+            });
         }
     }];
     [_queue addOperation:operation];
@@ -138,8 +140,7 @@
     return NO;
 }
 
-#pragma mark -
-#pragma mark dealloc
+#pragma mark - dealloc
 /**
  取消正在下载的队列
  */
