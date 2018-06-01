@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,14 +25,23 @@
                             <constraint firstAttribute="width" constant="240" id="gr6-FN-wh7"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FfT-P4-lbT">
+                        <rect key="frame" x="10" y="11" width="10.5" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="48h-h0-9Tp" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="6TV-sg-ccP"/>
                     <constraint firstItem="48h-h0-9Tp" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="giF-KA-iZa"/>
+                    <constraint firstItem="FfT-P4-lbT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="lgg-Qv-THp"/>
+                    <constraint firstItem="FfT-P4-lbT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="w1H-8x-4lj"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="imageV" destination="48h-h0-9Tp" id="9RX-LW-Jx6"/>
+                <outlet property="lab" destination="FfT-P4-lbT" id="Q5B-7X-faF"/>
             </connections>
             <point key="canvasLocation" x="34" y="106.5"/>
         </tableViewCell>

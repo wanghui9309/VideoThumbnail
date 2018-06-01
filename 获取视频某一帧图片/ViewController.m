@@ -56,7 +56,7 @@
     NSArray *arr = @[rtmp, rtsp, hks, cctv1, cctv3, cctv5, cctv5phd, cctv6];
     
     WHTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellIdentifier" forIndexPath:indexPath];
-    [cell setUp:arr[arc4random_uniform((int)arr.count)]];
+    [cell setUp:arr[indexPath.row%arr.count] index:(int)indexPath.row%arr.count];
     
     return cell;
 }

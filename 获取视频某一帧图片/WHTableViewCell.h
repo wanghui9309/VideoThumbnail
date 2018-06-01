@@ -10,6 +10,6 @@
 
 @interface WHTableViewCell : UITableViewCell
 
-- (void)setUp:(NSString *)url;
+- (void)setUp:(NSString *)url index:(int)index;
 
 @end

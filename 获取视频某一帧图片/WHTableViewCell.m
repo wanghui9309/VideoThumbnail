@@ -13,6 +13,7 @@
 @interface WHTableViewCell()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageV;
+@property (weak, nonatomic) IBOutlet UILabel *lab;
 
 @end
 
@@ -23,9 +24,10 @@
     // Initialization code
 }
 
-- (void)setUp:(NSString *)url
+- (void)setUp:(NSString *)url index:(int)index
 {
-    [self.imageV wh_setThumbnailImageForVideoWithURL:url];
+    [self.imageV wh_setThumbnailImageForVideoWithURL:url placeholderImage:[UIImage imageNamed:@"erweima"]];
+    self.lab.text = [NSString stringWithFormat:@"%d", index];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
