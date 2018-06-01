@@ -34,6 +34,7 @@ static UIImage *image;
 - (UIImage *)movieDecode:(NSString *)url withDuration:(int64_t)duration
 {
     int ret = GetDurationFirstIFrameAndConvertToPic(url.UTF8String, duration);
+    if (ret < 0) image = nil;
     NSLog(@"%d", ret);
     return image;
 }
