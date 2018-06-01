@@ -21,10 +21,10 @@
  
  @param url 视频URL
  @param minDuration 秒数
- @param success 成功回调
+ @param completedBlock 操作回调
  return operation
  */
-- (NSOperation *)downloadImageWithVideoURL:(NSString *)url atTime:(CGFloat)minDuration success:(void (^)(UIImage *image))success;
+- (NSOperation *)downloadImageWithVideoURL:(NSString *)url atTime:(CGFloat)minDuration completedBlock:(void (^)(UIImage *image, BOOL finished))completedBlock;
 
 /**
  取消正在下载的队列

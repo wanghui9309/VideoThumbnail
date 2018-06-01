@@ -51,6 +51,7 @@ static char loadImageOperationKey;
     if (operation)
     {
         [operation cancel];
+        operation = nil;
         [dict removeObjectForKey:key];
     }
 }

@@ -55,26 +55,25 @@
  */
 - (void)wh_setThumbnailImageForVideoWithURL:(NSString *)url placeholderImage:(UIImage *)placeholder atTime:(CGFloat)minDuration
 {
-    [self wh_cancelImageLoadOperationWithkey:[NSString stringWithFormat:@"%p", self]];
+    [self wh_cancelImageLoadOperationWithkey:@"UIImageViewImageLoad"];
     if (placeholder)
     {
         self.image = placeholder;
     }
-    else
-    {
-        self.image = nil;
-    }
     
     __weak typeof(self) weakSelf = self;
-    NSOperation *opertaion = [WHThumbnailManager.sharedManager downloadImageWithVideoURL:url atTime:minDuration success:^(UIImage *image) {
+    NSOperation *opertaion = [WHThumbnailManager.sharedManager downloadImageWithVideoURL:url atTime:minDuration completedBlock:^(UIImage *image, BOOL finished) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!weakSelf) return;
-            [weakSelf scaleToSize:image];
+            if (finished)
+                [weakSelf scaleToSize:image];
+            else
+                weakSelf.image = placeholder;
         });
     }];
     if (opertaion)
     {
-        [self wh_setImageLoadOperation:opertaion withKey:[NSString stringWithFormat:@"%p", self]];
+        [self wh_setImageLoadOperation:opertaion withKey:@"UIImageViewImageLoad"];
     }
 }
 

@@ -60,15 +60,15 @@
 
  @param url 视频URL
  @param minDuration 秒数
- @param success 成功回调
+ @param completedBlock 操作回调
  return operation
  */
-- (NSOperation *)downloadImageWithVideoURL:(NSString *)url atTime:(CGFloat)minDuration success:(void (^)(UIImage *image))success
+- (NSOperation *)downloadImageWithVideoURL:(NSString *)url atTime:(CGFloat)minDuration completedBlock:(void (^)(UIImage *image, BOOL finished))completedBlock
 {
     if (!url || url.length == 0) return nil;
     
     //1.判断内存缓存有没有image，如果有直接返回
-    if ([self queryImageFromMemoryCacheWithUrlkey:url success:success]) return nil;
+    if ([self queryImageFromMemoryCacheWithUrlkey:url completedBlock:completedBlock]) return nil;
     
     //2.判断当前url是不是正在下载，如果在下载，用NSOperationQueue依赖进行拦截，然后重缓存中读取image进行返回
     BOOL isDownloadIn = NO;
@@ -79,10 +79,11 @@
     
     __weak typeof(self) weakSelf = self;
     NSBlockOperation *operation = [NSBlockOperation new];
+    __weak NSBlockOperation *weakOperation = operation;
     if (isDownloadIn)
     {//如果当前URL在下载过程中，就添加依赖等待第一个URL下载结束后，存到内存缓存，然后去缓存中读取image刷新界面
         [operation addExecutionBlock:^{
-            [weakSelf queryImageFromMemoryCacheWithUrlkey:url success:success];
+            [weakSelf queryImageFromMemoryCacheWithUrlkey:url completedBlock:completedBlock];
         }];
         [operation addDependency:self.currentOperation];
         [self.queue addOperation:operation];
@@ -112,9 +113,27 @@
         if (image && imageData)
         {
             [weakSelf.imageCache cacheImage:image forKey:url];
-            
+        }
+        
+        if (!weakOperation || weakOperation.isCancelled)
+        {
+            //如果操作取消了,不做任何事情
+            //如果我们调用completedBlock,这个block会和另外一个completedBlock争夺一个对象,因此这个block被调用后会覆盖新的数据
+        }
+        else
+        {
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (success) success(image);
+                if (weakOperation && !weakOperation.isCancelled)
+                {
+                    if (image)
+                    {
+                        if (completedBlock) completedBlock(image, YES);
+                    }
+                    else
+                    {
+                        if (completedBlock) completedBlock(nil, NO);
+                    }
+                }
             });
         }
     }];
@@ -127,17 +146,21 @@
  根据key从内存缓存中查询图片
 
  @param url key
- @param success 成功回调
+ @param completedBlock 操作回调
  */
-- (BOOL)queryImageFromMemoryCacheWithUrlkey:(NSString *)url success:(void (^)(UIImage *image))success
+- (BOOL)queryImageFromMemoryCacheWithUrlkey:(NSString *)url completedBlock:(void (^)(UIImage *image, BOOL finished))completedBlock
 {
     UIImage *image = [_imageCache imageFromMemoryCacheForKey:url];
-    if (image && success)
+    if (image)
     {// 内存缓存中读取
-        success(image);
+        completedBlock(image, YES);
         return YES;
     }
-    return NO;
+    else
+    {
+        completedBlock(nil, NO);
+        return NO;
+    }
 }
 
 #pragma mark - dealloc
